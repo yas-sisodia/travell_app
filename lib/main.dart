@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travell_app/pages/navpages/main_page.dart';
 import 'package:travell_app/pages/welcome_page.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: WelcomePage(),
+      home: MainPage(),
     );
   }
 }
