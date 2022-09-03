@@ -5,6 +5,7 @@ import 'package:travell_app/cubit/app_cubits.dart';
 import 'package:travell_app/pages/detail_page.dart';
 import 'package:travell_app/pages/navpages/main_page.dart';
 import 'package:travell_app/pages/welcome_page.dart';
+import 'package:travell_app/services/data_services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +24,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: BlocProvider<AppCubits>(
-        create: (context)=>AppCubits(),
+        create: (context)=>AppCubits(
+          data: DataServices()
+        ),
         child:  AppCubitLogics(),
     ));
   }

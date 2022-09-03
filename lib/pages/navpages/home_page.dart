@@ -1,6 +1,9 @@
 // ignore_for_file: unused_local_variable, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travell_app/cubit/app_cubit_states.dart';
+import 'package:travell_app/cubit/app_cubits.dart';
 import 'package:travell_app/widgets/app_large_text.dart';
 import 'package:travell_app/widgets/app_text.dart';
 
@@ -24,7 +27,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 3, vsync: this);
     return Scaffold(
-      body: Column(
+      body: BlocBuilder<AppCubits, CubitStates>(
+        builder: (context, state){
+          if(state is LoadedState){
+            var info = state.places;
+            return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -90,19 +97,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             width: double.maxFinite,
             child: TabBarView(controller: _tabController, children: [
               ListView.builder(
-                itemCount: 3,
+                itemCount: info.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.only(right: 15, top: 10),
-                    width: 200,
-                    height: 300,
-                    decoration:  BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image: AssetImage("img/mountain.jpeg"),
-                            fit: BoxFit.cover)),
+                  return GestureDetector(
+                    onTap: (){
+                            BlocProvider.of<AppCubits>(context).detailPage(info[index]);
+                          },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 15, top: 10),
+                      width: 200,
+                      height: 300,
+                      decoration:  BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          image: DecorationImage(
+                              image: NetworkImage("http://mark.bslmeiyu.com/uploads/"+info[index].img),
+                              fit: BoxFit.cover)),
+                    ),
                   );
                 },
               ),
@@ -168,7 +180,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 }),
           )
         ],
-      ),
+      );
+          }
+          else{
+            return Container();
+          }
+        },)
     );
   }
 }

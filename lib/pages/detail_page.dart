@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:travell_app/cubit/app_cubit_states.dart';
 import 'package:travell_app/misc/colors.dart';
+import 'package:travell_app/pages/navpages/home_page.dart';
 import 'package:travell_app/widgets/app_large_text.dart';
 import 'package:travell_app/widgets/app_text.dart';
+
+import '../cubit/app_cubits.dart';
                   // ignore_for_file: prefer_const_constructors
  
 
@@ -18,7 +23,10 @@ class _DetailPageState extends State<DetailPage> {
   double ratingIndex = 3.5;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocBuilder<AppCubits, CubitStates>(
+      builder: (context, state){
+        DetailState detail = state as DetailState;
+        return Scaffold(
       body: Container(
         height: double.maxFinite,
         width: double.maxFinite,
@@ -30,9 +38,9 @@ class _DetailPageState extends State<DetailPage> {
                 child: Container(
                   width: double.maxFinite,
                   height: 350,
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("img/mountain.jpeg"),
+                          image: NetworkImage("http://mark.bslmeiyu.com/uploads/"+detail.place.img),
                           fit: BoxFit.cover
                           )
                           ),
@@ -45,14 +53,17 @@ class _DetailPageState extends State<DetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
+                      onPressed: () {
+                        BlocProvider.of<AppCubits>(context).goHome();
+                        // Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.black,
                       )),
                   IconButton(onPressed: () {}, 
                   icon:  Icon(Icons.more_vert, 
-                  color: Colors.white,)
+                  color: Colors.black,)
                   )
                 ],
               ),
@@ -83,8 +94,8 @@ class _DetailPageState extends State<DetailPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppLargeText(text: "Yosemite"),
-                          AppLargeText(text: "\$250", size: 33,
+                          AppLargeText(text: detail.place.name),
+                          AppLargeText(text: "\$"+detail.place.price.toString(), size: 33,
                           color: AppColors.mainColor,)
                         ],
                       ),
@@ -98,9 +109,9 @@ class _DetailPageState extends State<DetailPage> {
                           Icon(Icons.location_on),
                           SizedBox(width: 3,),
                           AppText(
-                            text: "USA, California",
+                            text: detail.place.location,
                             size: 20, 
-                            color: AppColors.mainColor,)
+                            color: AppColors.textColor1,)
                         ],
                       ),
                     ),
@@ -154,7 +165,7 @@ class _DetailPageState extends State<DetailPage> {
                             onTap: (){
                               setState(() {
                                 selectedIndex = index;
-
+                
                               });
                             },
                             child: Container(
@@ -180,11 +191,15 @@ class _DetailPageState extends State<DetailPage> {
                         left: 30),
                         child: AppLargeText(text: "Description"),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        top:10,
-                        left: 30),
-                        child: AppText(text: "Yosemite National Park is located in Central Sierra Nevada in the US state of California. It is located near the wild protected areas."),
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(
+                            top:10,
+                            left: 30),
+                            child: AppText(text: detail.place.description, color: AppColors.mainTextColor,),
+                        ),
+                      ],
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 30,
@@ -236,5 +251,6 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
+      });
   }
 }
