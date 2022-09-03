@@ -15,6 +15,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   int selectedIndex = -1;
+  double ratingIndex = 3.5;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,17 +111,19 @@ class _DetailPageState extends State<DetailPage> {
                         children: [
                           RatingBar.builder(
                         allowHalfRating: true,
-                        initialRating: 3.5,
+                        initialRating: ratingIndex,
                         itemSize: 20,
                         itemCount: 5,
                         itemBuilder: (_, index){
                           return Icon(Icons.star, color: Colors.amber);
                       }, 
                       onRatingUpdate: (rating){
-                        print(rating);
+                        setState(() {
+                          ratingIndex = rating;
+                        });
                       }
                       ),
-                      AppText(text: "(3.5)")
+                      AppText(text: ratingIndex.toString())
                         ],
                       )),
                     Container(
