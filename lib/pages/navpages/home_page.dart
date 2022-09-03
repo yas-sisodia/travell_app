@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 20),
+            padding:const EdgeInsets.only(left: 20),
             height: 300,
             width: double.maxFinite,
             child: TabBarView(controller: _tabController, children: [
@@ -94,10 +94,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, int index) {
                   return Container(
-                    margin: EdgeInsets.only(right: 15, top: 10),
+                    margin: const EdgeInsets.only(right: 15, top: 10),
                     width: 200,
                     height: 300,
-                    decoration: BoxDecoration(
+                    decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
                         image: DecorationImage(
